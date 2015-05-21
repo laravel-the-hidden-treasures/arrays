@@ -1,5 +1,5 @@
 # Arrays
-Laravel5 offers a great way to manipulate arrays through the Illuminate\Support\Arr class and its great variety of methods. We can manipulate arrays with very little code which is awesome. Let's see a fast example:
+Laravel5 offers a great way to manipulate arrays through the `Illuminate\Support\Arr` class and its great variety of methods. We can manipulate arrays with very little code which is awesome. Let's see a fast example:
 
 	use Illuminate\Support\Arr;
 
@@ -17,7 +17,7 @@ Laravel5 offers a great way to manipulate arrays through the Illuminate\Support\
 	
 	{!!Form::select('users', $users, null')!!}
 	
-How easy? We created an array with key/value pairs using their id,name values so fast. Now it is ready to apply it to the Form::select() method at once (as long as we use the Illuminate\Html\FormBuilder package of course).
+How easy? We created an array with key/value pairs using their id,name values so fast. Now it is ready to apply it to the `Form::select()` method at once (as long as we use the Illuminate Html package of course).
 
 Below every method of Arr class is explained with some brief and declarative examples per method so you can grasp their functionality with ease.
 
@@ -83,8 +83,10 @@ Add an element to an array by adding a key/value pair. You can also use "dot" no
 		'name' => 'John Doe',
 		'age' => 32,
 		'kids' => [
-			'name' => 'Baby Doe',
-			'age' => 1
+			[
+				'name' => 'Baby Doe',
+				'age' => 1
+			]
 		]
 	];
 	
@@ -115,8 +117,8 @@ Build a new array using a callback.
 	]; 
 	
 	$array2 = Arr::build($array1, function($key, $value) {
-					return [$value['id'], $value['name']];
-				});
+		return [$value['id'], $value['name']];
+	});
 	
 **Result:**
 	
@@ -319,7 +321,7 @@ Get all of the given array except for a specified array of items.
 **Result:**
 	
 	$array2 = [
-		'['id' => 2, 'name' => 'Jane Doe']
+		1 => ['id' => 2, 'name' => 'Jane Doe']
 	];
 	
 **Example 2:**
@@ -355,7 +357,7 @@ Get all of the given array except for a specified array of items.
 	
 **Notes:**
 
-The $keys parameter can be a single key or an array of keys. Of course the keys can be integers or strings.
+The `$keys` parameter can be a single key or an array of keys. Of course the keys can be integers or strings.
 
 ## fetch()
 
@@ -419,13 +421,13 @@ Return the first element in an array passing a given truth test.
 	
 	$array1 = [1,2,3]; 
 	
-	Arr::first($array1, function($key, $value) {
+	$first = Arr::first($array1, function($key, $value) {
 		return $key == 0;
 	}, [1,2,3]);
 	
 **Result:**
 	
-	1
+	$first = 1;
 	
 **Example 2:**
 
@@ -433,13 +435,13 @@ Return the first element in an array passing a given truth test.
 	
 	$array1 = [1,2,3]; 
 	
-	Arr::first($array1, function($key, $value) {
+	$first = Arr::first($array1, function($key, $value) {
 		return $key > 2;
 	}, [1,2,3]);
 	
 **Result:**
 	
-	[1,2,3]
+	$first = [1,2,3];
 	
 **Equivalent Helper Function:**
 
@@ -448,50 +450,6 @@ Return the first element in an array passing a given truth test.
 **Notes:**
 
 The callback function is a test for the array parameter. The first element of the array that passes the test is returned. In case there is nothing returned the third parameter which is a callback is returned.
-	
-## last()
-
-Return the last element in an array passing a given truth test.
-
-**Method:**
-	
-	public static function last($array, callable $callback, $default = null);
-	
-**Example 1:**
-
-	use Illuminate\Support\Arr;
-	
-	$array1 = [1,2,3]; 
-	
-	Arr::last($array1, function($key, $value) {
-		return $key == 0;
-	}, [1,2,3]);
-	
-**Result:**
-	
-	3
-	
-**Example 2:**
-
-	use Illuminate\Support\Arr;
-	
-	$array1 = [1,2,3]; 
-	
-	Arr::last($array1, function($key, $value) {
-		return $key > 2;
-	}, [1,2,3]);
-	
-**Result:**
-	
-	[1,2,3]
-	
-**Equivalent Helper Function:**
-
-	array_last($array, $callback, $default = null);
-	
-**Notes:**
-	
-The callback function is a test for the array parameter. The last element of the array that could pass the test is returned. In case there is nothing returned the third parameter which is a callback is returned. This method uses the first() merhod, first calculates the first element that passes the test and then uses the array_reverse method to return the array in reverse order and takes the first one from it.
 
 ## flatten()
 
@@ -585,7 +543,7 @@ Remove one or many array items from a given array using "dot" notation.
 	
 **Notes:**
 
-The $keys parameter can be a key or an array of keys. Be careful because this method affects the array itself on which the method applied.
+The `$keys` parameter can be a key or an array of keys. Be careful because this method affects the array itself on which the method applied.
 
 ## get()
 
@@ -619,7 +577,7 @@ Get an item from an array using "dot" notation.
 		['id' => 2, 'name' => 'Jane Doe']
 	];
 	
-	$result = Arr::get($array1, '1.name', [1,2,3]);
+	$result = Arr::get($array1, '11.name', [1,2,3]);
 	
 **Result:**
 	
@@ -674,6 +632,50 @@ Check if an item exists in an array using "dot" notation.
 **Equivalent Helper Function:**
 
 	array_has($array, $key);
+
+## last()
+
+Return the last element in an array passing a given truth test.
+
+**Method:**
+	
+	public static function last($array, callable $callback, $default = null);
+	
+**Example 1:**
+
+	use Illuminate\Support\Arr;
+	
+	$array1 = [1,2,3]; 
+	
+	$last = Arr::last($array1, function($key, $value) {
+		return $key == 0;
+	}, [1,2,3]);
+	
+**Result:**
+	
+	$last = 3;
+	
+**Example 2:**
+
+	use Illuminate\Support\Arr;
+	
+	$array1 = [1,2,3]; 
+	
+	$last = Arr::last($array1, function($key, $value) {
+		return $key > 2;
+	}, [1,2,3]);
+	
+**Result:**
+	
+	$last = [1,2,3];
+	
+**Equivalent Helper Function:**
+
+	array_last($array, $callback, $default = null);
+	
+**Notes:**
+	
+The callback function is a test for the array parameter. The last element of the array that could pass the test is returned. In case there is nothing returned the third parameter which is a callback is returned. This method uses the `first()` merhod, first calculates the first element that passes the test and then uses the `array_reverse()` method to return the array in reverse order and takes the first one from it.
 	
 ## only()
 
@@ -726,7 +728,7 @@ Get a subset of the items from the given array.
 	
 **Notes:**
 
-The $keys parameter can be a single key or an array of keys. In both cases the result is an array and all selected elements retain their keys as before.
+The `$keys` parameter can be a single key or an array of keys. In both cases the result is an array and all selected elements retain their keys as before.
 
 ## pluck()
 
@@ -825,7 +827,7 @@ Get a value from the array, and remove it.
 	
 	$array2 = ['id' => 1, 'name' => 'John Doe'];
 	
-**Example 1:**
+**Example 2:**
 
 	use Illuminate\Support\Arr;
 	
@@ -873,7 +875,7 @@ Set an array item to a given value using "dot" notation.
 		['id' => 3, 'name' => 'Jack Doe']
 	];
 	
-	Arr::set($array1, '4.id', 4);
+	Arr::set($array1, '3.id', 4);
 	
 **Result:**
 
@@ -906,7 +908,7 @@ Set an array item to a given value using "dot" notation.
 	
 **Notes:**
 
-If no $key parameter is passed then the whole array is replaced by the $value parameter. Be careful because this method updates the array itself.
+If no `$key` parameter is passed then the whole array is replaced by the $value parameter. Be careful because this method updates the array itself.
 
 ## sort()
 
@@ -974,7 +976,7 @@ Filter the array using the given callback.
 	
 	$array1 = [1,2,3];
 	
-	$array2 = Arr::sort($array1, function($key, $value) {
+	$array2 = Arr::where($array1, function($key, $value) {
 		return $value > 2;
 	});
 	
@@ -992,7 +994,7 @@ Filter the array using the given callback.
 		['id' => 3, 'name' => 'Jack Doe']
 	];
 	
-	$array2 = Arr::sort($array1, function($key, $value) {
+	$array2 = Arr::where($array1, function($key, $value) {
 		return $value['id'] > 2;
 	});
 	
